@@ -65,9 +65,21 @@ class RTable
 
   def insert_entry(index, entry)
     i = get_entry(index)
-    puts i
     @table[i[0]].insert(i[1], entry)
     @table[i[0]].delete_at(i[1] + 1)
+  end
+
+  def remove_entry(*args)
+    if args.count == 0
+      @table.last.pop
+      @table.last.push(nil)
+    elsif args.count == 1
+      i = get_entry(args[0])
+      @table[i[0]].insert(i[1], nil)
+      @table[i[0]].delete_at(i[1] + 1)
+    else
+      raise ArgumentError.new("Wrong number of arguments. Expecting 0 or 1, but got #{args.count}.")
+    end
   end
 
   def get_table_size
@@ -94,7 +106,7 @@ class RTable
       i = 0
       @table.each do |d|
         d.each do |e|
-          if i == index
+          if i == (index - 1)
             return [@table.index(d), @table[@table.index(d)].index(e)]
           end
           i += 1

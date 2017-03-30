@@ -51,24 +51,28 @@ class RTableTest < Minitest::Test
     @rtable.add_entry("e")
     @rtable.add_entry("f")
     @rtable.add_entry("g")
-    puts @rtable.table[1][0]
     assert_equal "g", @rtable.table[1][0]
   end
 
   def test_insert_entry
     @rtable.add_dice([6, 12, 6])
-    @rtable.add_entry("a")
-    @rtable.add_entry("b")
-    @rtable.add_entry("c")
-    @rtable.add_entry("d")
-    @rtable.add_entry("e")
-    @rtable.add_entry("f")
-    @rtable.add_entry("g")
-    @rtable.add_entry("h")
-    @rtable.add_entry("i")
-    @rtable.add_entry("j")
-    @rtable.add_entry("k")
+    letters = ('a'..'z').to_a
+    22.times.each do |x|
+      @rtable.add_entry(letters.shift)
+    end
     @rtable.insert_entry(8, "INSERT")
-    assert_equal "INSERT", @rtable.table[1][2]
+    assert_equal "INSERT", @rtable.table[1][1]
+  end
+
+  def test_remove_entry
+    @rtable.add_dice([6, 12, 6])
+    letters = ('a'..'z').to_a
+    22.times.each do |x|
+      @rtable.add_entry(letters.shift)
+    end
+    @rtable.remove_entry
+    assert_equal nil, @rtable.table.last.last
+    @rtable.remove_entry(14)
+    assert_equal nil, @rtable.table[1][7]
   end
 end
