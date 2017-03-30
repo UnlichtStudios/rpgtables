@@ -4,6 +4,7 @@ class RTableTest < Minitest::Test
 
   def setup
     @rtable = RTable.new
+    @othertable = RTable.new
   end
 
   def test_that_it_has_a_table
@@ -55,24 +56,35 @@ class RTableTest < Minitest::Test
   end
 
   def test_insert_entry
-    @rtable.add_dice([6, 12, 6])
-    letters = ('a'..'z').to_a
-    22.times.each do |x|
-      @rtable.add_entry(letters.shift)
-    end
+    seed_table
     @rtable.insert_entry(8, "INSERT")
     assert_equal "INSERT", @rtable.table[1][1]
   end
 
   def test_remove_entry
-    @rtable.add_dice([6, 12, 6])
-    letters = ('a'..'z').to_a
-    22.times.each do |x|
-      @rtable.add_entry(letters.shift)
-    end
+    seed_table
     @rtable.remove_entry
     assert_equal nil, @rtable.table.last.last
     @rtable.remove_entry(14)
     assert_equal nil, @rtable.table[1][7]
   end
+
+  def test_roll_table
+    seed_table
+    assert_match /[a-z]/, @rtable.roll_table
+  end
+
+  def test_reset_table
+    seed_table
+    @rtable.reset_table
+    @othertable.add_dice([6, 12, 6])
+    assert_equal @othertable.table, @rtable.table
+  end
+
+  def test_destroy_table
+    seed_table
+    @rtable.destroy_table
+    assert_equal [], @rtable.table
+  end
+
 end

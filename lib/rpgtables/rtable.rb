@@ -27,6 +27,7 @@ class RTable
 
   def initialize
     @table = []
+    @rolls = []
   end
 
   def add_die(die)
@@ -80,6 +81,33 @@ class RTable
     else
       raise ArgumentError.new("Wrong number of arguments. Expecting 0 or 1, but got #{args.count}.")
     end
+  end
+
+  def roll_table
+    @rolls = []
+    @table.each do |d|
+      if @table.index(d) == 0
+        @rolls.push(rand(d.count))
+      else
+        @rolls.push(1 + rand(d.count))
+      end
+    end
+    sum = 0
+    @rolls.each do |r|
+      sum += r
+    end
+    i = get_entry(sum)
+    return @table[i[0]][i[1]]
+  end
+
+  def reset_table
+    @table.each do |d|
+      d.map! { |x| x = nil}
+    end
+  end
+
+  def destroy_table
+    @table = []
   end
 
   def get_table_size
