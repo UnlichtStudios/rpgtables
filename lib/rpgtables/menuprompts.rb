@@ -83,11 +83,32 @@ module MenuPrompts
 "Please enter either a single die number, or a list of
 dice separated by commas. ex. (6,12,20): "
 
-  DICEINPUTERROR =
+  PROMPTERROR =
 "Error! Not valid input!
 "
 
   CONTINUE =
 "Please press enter to continue..."
+
+  ADDENTRYPROMPT =
+"Would you like to add an entry to the end of the table?
+Or do you wish to insert an entry at a specific spot on
+the table?
+
+1) Add Entry
+2) Insert Entry
+
+Please enter a number: "
+
+  POPENTRYPROMPT =
+"Please type in the entry you wish to add: "
+
+  TABLEEMPTYERROR =
+"Please add at least one die to the table before adding
+an entry."
+
+  INSERTENTRYPOSPROMPT =
+"Please enter the position on the table you wish to
+insert your entry: "
 
 end

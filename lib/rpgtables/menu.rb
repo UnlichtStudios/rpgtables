@@ -95,6 +95,48 @@ class Menu
         print CONTINUE
         gets
 
+      when 2
+        if @table.table.count > 0
+          print ADDENTRYPROMPT
+          @stdin = gets.chomp
+          if @stdin.to_i == 1
+            puts POPENTRYPROMPT
+            @stdin = gets.chomp
+            @table.add_entry(@stdin)
+            puts "'#{@stdin}' added to table!"
+            gets
+          elsif @stdin.to_i == 2
+            pos = 0
+            entry = ""
+            puts INSERTENTRYPOSPROMPT
+            pos = gets.chomp.to_i
+            puts POPENTRYPROMPT
+            entry = gets.chomp
+            @table.insert_entry(pos, entry)
+            puts "'#{entry}' added to table at position #{pos}!"
+            gets
+          else
+            puts PROMPTERROR
+            gets
+          end
+        else
+          puts TABLEEMPTYERROR
+          gets
+        end
+
+      when 3
+        i = 1
+        puts "----------------------------------------------------------"
+        puts " Pos | % |                 Entry"
+        @table.table.each do |d|
+          d.each do |e|
+            puts "----------------------------------------------------------"
+            puts " #{i} " + "         #{e}"
+            i += 1
+          end
+        end
+        print CONTINUE
+        gets
 
       when 11
         @@menu_state = EXIT
