@@ -103,9 +103,8 @@ Please enter a number: "
   POPENTRYPROMPT =
 "Please type in the entry you wish to add: "
 
-  TABLEEMPTYERROR =
-"Please add at least one die to the table before adding
-an entry."
+  TABLEERROR =
+"Please add another die to the table before adding an entry."
 
   INSERTENTRYPOSPROMPT =
 "Please enter the position on the table you wish to

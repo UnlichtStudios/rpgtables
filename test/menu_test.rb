@@ -28,4 +28,8 @@ class MenuTest < Minitest::Test
     @menu = Menu.new
   end
 
+  def test_that_goes_to_create_table_menu
+    
+  end
+
 end

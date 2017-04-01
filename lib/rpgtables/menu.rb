@@ -31,14 +31,20 @@ include MenuState
 #Main Menu
 class Menu
 
+  attr_reader :table
   attr_writer :stdin
 
   def initialize
     @stdin = ""
+    @table = RTable.new
   end
 
   def menu_state
     return @@menu_state
+  end
+
+  def get_value
+    gets.chomp
   end
 
   def process_menu
@@ -58,7 +64,7 @@ class Menu
     puts MAINMENU
     until @stdin == (1..3)
       print INPUTPROMPT
-      @stdin = gets.chomp
+      @stdin = get_value
       case @stdin.to_i
       when 1
         @@menu_state = CREATE
@@ -73,70 +79,27 @@ class Menu
   end
 
   def create_table_menu
-    @table = RTable.new
+
     until @stdin == (10..11)
       puts CREATETABLEMENU
       print INPUTPROMPT
-      @stdin = gets.chomp
+      @stdin = get_value
+      puts @stdin.to_s
       case @stdin.to_i
       when 1
-        dice = []
-        print ADDDICEPROMPT
-        @stdin = gets.chomp
-        dice = @stdin.split(/[^\d]/).map { |i| i.to_i }.reject { |i| i == 0}
-        if dice == 1
-          @table.add_dice(dice[0])
-        else
-          @table.add_dice(dice)
-        end
-        dice.each do |d|
-          puts "d#{d} added to table!"
-        end
-        print CONTINUE
-        gets
+        add_dice
 
       when 2
-        if @table.table.count > 0
-          print ADDENTRYPROMPT
-          @stdin = gets.chomp
-          if @stdin.to_i == 1
-            puts POPENTRYPROMPT
-            @stdin = gets.chomp
-            @table.add_entry(@stdin)
-            puts "'#{@stdin}' added to table!"
-            gets
-          elsif @stdin.to_i == 2
-            pos = 0
-            entry = ""
-            puts INSERTENTRYPOSPROMPT
-            pos = gets.chomp.to_i
-            puts POPENTRYPROMPT
-            entry = gets.chomp
-            @table.insert_entry(pos, entry)
-            puts "'#{entry}' added to table at position #{pos}!"
-            gets
-          else
-            puts PROMPTERROR
-            gets
-          end
-        else
-          puts TABLEEMPTYERROR
-          gets
-        end
+        add_entry
 
       when 3
-        i = 1
-        puts "----------------------------------------------------------"
-        puts " Pos | % |                 Entry"
-        @table.table.each do |d|
-          d.each do |e|
-            puts "----------------------------------------------------------"
-            puts " #{i} " + "         #{e}"
-            i += 1
-          end
-        end
-        print CONTINUE
-        gets
+        view_table
+
+      when 4
+        roll_table
+
+      when 5
+        remove_entry_from_table
 
       when 11
         @@menu_state = EXIT
@@ -145,6 +108,81 @@ class Menu
         puts INPUTERROR
       end
     end
+  end
+
+  def add_dice
+    dice = []
+    print ADDDICEPROMPT
+    @stdin = get_value
+    dice = @stdin.split(/[^\d]/).map { |i| i.to_i }.reject { |i| i == 0}
+    if dice == 1
+      @table.add_dice(dice[0])
+    else
+      @table.add_dice(dice)
+    end
+    dice.each do |d|
+      puts "d#{d} added to table!"
+    end
+    print CONTINUE
+    gets
+  end
+
+  def add_entry
+    if @table.table.count > 0 && @table.get_entry_count <= @table.table.count
+      print ADDENTRYPROMPT
+      @stdin = get_value
+      if @stdin.to_i == 1
+        puts POPENTRYPROMPT
+        @stdin = get_value
+        @table.add_entry(@stdin)
+        puts "'#{@stdin}' added to table!"
+        gets
+      elsif @stdin.to_i == 2
+        pos = 0
+        entry = ""
+        puts INSERTENTRYPOSPROMPT
+        pos = get_value.to_i
+        puts POPENTRYPROMPT
+        entry = get_value
+        @table.insert_entry(pos, entry)
+        puts "'#{entry}' added to table at position #{pos}!"
+        gets
+      else
+        puts PROMPTERROR
+        gets
+      end
+    else
+      puts TABLEERROR
+      gets
+    end
+  end
+
+  def view_table
+    i = 1
+    puts "----------------------------------------------------------"
+    puts " Pos | % |                 Entry"
+    @table.table.each do |d|
+      d.each do |e|
+        puts "----------------------------------------------------------"
+        puts " #{i} " + "         #{e}"
+        i += 1
+      end
+    end
+    puts CONTINUE
+    gets
+  end
+
+  def roll_table
+    entry = @table.roll_table
+    roll = @table.get_last_roll
+    puts "----------------------------------------------------------"
+    puts "You rolled a #{roll + 1}. Your result is #{entry}."
+    print CONTINUE
+    gets
+  end
+
+  def remove_entry_from_table
+    puts "Please enter the "
   end
 
 end

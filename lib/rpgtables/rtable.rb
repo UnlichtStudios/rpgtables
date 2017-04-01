@@ -72,8 +72,14 @@ class RTable
 
   def remove_entry(*args)
     if args.count == 0
-      @table.last.pop
-      @table.last.push(nil)
+      i = get_available_entry
+      if i == nil
+        @table.last.pop
+        @table.last.push(nil)
+      else
+        @table[i[0]].delete_at(i[1] - 1)
+        @table[i[0]].insert(i[1], nil)
+      end
     elsif args.count == 1
       i = get_entry(args[0])
       @table[i[0]].insert(i[1], nil)
@@ -118,6 +124,27 @@ class RTable
     return num
   end
 
+  def get_last_roll
+    sum = 0
+    @rolls.each do |r|
+      sum += r
+      return sum
+    end
+  end
+
+  def get_entry_count
+    i = 0
+    @table.each do |d|
+      d.each do |e|
+        if e == nil
+          return i
+        end
+        i += 1
+      end
+    end
+    return i
+  end
+
   private
 
     def get_available_entry
@@ -128,6 +155,7 @@ class RTable
           end
         end
       end
+      return nil
     end
 
     def get_entry(index)
@@ -140,6 +168,7 @@ class RTable
           i += 1
         end
       end
+      return i
     end
 
 end

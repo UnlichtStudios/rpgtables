@@ -93,6 +93,7 @@ class RTableTest < Minitest::Test
 
   def test_roll_table
     seed_table
+    puts @rtable.roll_table
     assert_match /[a-z]/, @rtable.roll_table
   end
 
@@ -107,6 +108,15 @@ class RTableTest < Minitest::Test
     seed_table
     @rtable.destroy_table
     assert_equal [], @rtable.table
+  end
+
+  def test_get_entry_count
+    seed_table
+    5.times.each do
+      @rtable.remove_entry
+    end
+    puts @rtable.table.to_s
+    assert_equal 17, @rtable.get_entry_count
   end
 
 end
