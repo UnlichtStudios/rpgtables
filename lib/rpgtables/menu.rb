@@ -128,7 +128,8 @@ class Menu
   end
 
   def add_entry
-    if @table.table.count > 0 && @table.get_entry_count <= @table.table.count
+    puts "COUNT #{@table.get_entry_count} SIZE #{@table.get_table_size}"
+    if @table.table.count > 0 && @table.get_entry_count < @table.get_table_size
       print ADDENTRYPROMPT
       @stdin = get_value
       if @stdin.to_i == 1

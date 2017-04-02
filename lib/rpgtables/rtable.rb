@@ -23,18 +23,21 @@
 # A table containing entries that can be randomly chosen
 class RTable
 
-  attr_accessor :table
+  attr_accessor :table, :dice
 
   def initialize
     @table = []
     @rolls = []
+    @dice = []
   end
 
   def add_die(die)
     if @table.count == 0
       @table.push(Array.new(die))
+      @dice.push(die)
     else
       @table.push(Array.new(die - 1))
+      @dice.push(die)
     end
   end
 
@@ -42,8 +45,10 @@ class RTable
     dice.each do |d|
       if @table.count == 0
         @table.push(Array.new(d))
+        @dice.push(d)
       else
         @table.push(Array.new(d - 1))
+        @dice.push(d)
       end
     end
   end
@@ -90,17 +95,11 @@ class RTable
   end
 
   def roll_table
-    @rolls = []
-    @table.each do |d|
-      if @table.index(d) == 0
-        @rolls.push(rand(d.count))
-      else
-        @rolls.push(1 + rand(d.count))
-      end
-    end
     sum = 0
-    @rolls.each do |r|
+    @dice.each do |d|
+      r = rand(d.to_i)
       sum += r
+      @rolls.push(r)
     end
     i = get_entry(sum)
     return @table[i[0]][i[1]]

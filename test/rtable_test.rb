@@ -37,14 +37,17 @@ class RTableTest < Minitest::Test
     @rtable.add_die(6)
     assert_equal 1, @rtable.table.count
     assert_equal 6, @rtable.table[0].count
+    assert_equal 1, @rtable.dice.count
     @rtable.add_die(12)
     assert_equal 2, @rtable.table.count
+    assert_equal 2, @rtable.dice.count
     assert_equal 17, @rtable.get_table_size
   end
 
   def test_add_dice
     @rtable.add_dice ([6, 12, 20, 6])
     assert_equal 4, @rtable.table.count
+    assert_equal 4, @rtable.dice.count
     assert_equal 41, @rtable.get_table_size
   end
 
@@ -93,7 +96,6 @@ class RTableTest < Minitest::Test
 
   def test_roll_table
     seed_table
-    puts @rtable.roll_table
     assert_match /[a-z]/, @rtable.roll_table
   end
 
@@ -115,7 +117,6 @@ class RTableTest < Minitest::Test
     5.times.each do
       @rtable.remove_entry
     end
-    puts @rtable.table.to_s
     assert_equal 17, @rtable.get_entry_count
   end
 

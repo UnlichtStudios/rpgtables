@@ -6,5 +6,5 @@ require "rpgtables/menu"
 module Rpgtables
   @menu = Menu.new
 
-  @menu.process_menu
+  #@menu.process_menu
 end
