@@ -25,10 +25,13 @@ class RTable
 
   attr_accessor :table, :dice
 
+  attr_reader :percent_array
+
   def initialize
     @table = []
     @rolls = []
     @dice = []
+    @percent_array = []
   end
 
   def add_die(die)
@@ -97,7 +100,7 @@ class RTable
   def roll_table
     sum = 0
     @dice.each do |d|
-      r = rand(d.to_i)
+      r = rand(d.to_i + 1)
       sum += r
       @rolls.push(r)
     end
@@ -144,6 +147,22 @@ class RTable
     return i
   end
 
+  def calculate_table
+    @table_index_array = get_table_index_array
+    @expand_dice_set = get_expanded_dice_set
+    @total_dice_combinations = get_dice_combinations
+
+    @counts = 0
+    match_array = []
+    @table_index_array.each do |x|
+      @counts = 0
+      match_array.push(get_match_count(x))
+    end
+    match_array.each do |x|
+      @percent_array.push((x / @total_dice_combinations) * 100)
+    end
+  end
+
   private
 
     def get_available_entry
@@ -170,4 +189,42 @@ class RTable
       return i
     end
 
+    def get_table_index_array
+      table_array = []
+      table_size = get_table_size
+      table_size.times.each do |x|
+        table_array.push(x + @dice.count)
+      end
+      return table_array
+    end
+
+    def get_expanded_dice_set
+      expand_set = []
+      @dice.each do |d|
+        tmp_ary = []
+        d.times.each do |x|
+          tmp_ary.push(x + 1)
+        end
+        expand_set.push(tmp_ary)
+      end
+      return expand_set
+    end
+
+    def get_dice_combinations
+      rolls = 1.0
+      @dice.each do |x|
+        rolls *= x
+      end
+      return rolls
+    end
+
+    def get_match_count(roll)
+      first_die = @expand_dice_set.values_at(0).flatten
+      *rest_of_dice = @expand_dice_set.values_at(1..-1)
+      matching_combinations = first_die.product(*rest_of_dice)
+
+      return @counts = matching_combinations.
+                select{ |c| c.inject(:+) == roll }.
+                to_a.count
+    end
 end

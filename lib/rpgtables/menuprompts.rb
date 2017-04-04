@@ -81,7 +81,10 @@ module MenuPrompts
 
   ADDDICEPROMPT =
 "Please enter either a single die number, or a list of
-dice separated by commas. ex. (6,12,20): "
+dice separated by commas. ex. (6,12,20). Please note that
+adding larger amounts of dice increases the calculation
+time of the percentage curve. Its recommended to keep it
+under 4 dice: "
 
   PROMPTERROR =
 "Error! Not valid input!

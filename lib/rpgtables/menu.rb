@@ -84,7 +84,6 @@ class Menu
       puts CREATETABLEMENU
       print INPUTPROMPT
       @stdin = get_value
-      puts @stdin.to_s
       case @stdin.to_i
       when 1
         add_dice
@@ -115,8 +114,8 @@ class Menu
     print ADDDICEPROMPT
     @stdin = get_value
     dice = @stdin.split(/[^\d]/).map { |i| i.to_i }.reject { |i| i == 0}
-    if dice == 1
-      @table.add_dice(dice[0])
+    if dice.count == 1
+      @table.add_die(dice[0])
     else
       @table.add_dice(dice)
     end
@@ -159,13 +158,15 @@ class Menu
   end
 
   def view_table
-    i = 1
+    @table.calculate_table
+    i = 0
     puts "----------------------------------------------------------"
-    puts " Pos | % |                 Entry"
+    puts " Pos |   %   |                 Entry"
     @table.table.each do |d|
       d.each do |e|
         puts "----------------------------------------------------------"
-        puts " #{i} " + "         #{e}"
+        puts "#{i + @table.dice.count}".ljust(6) +
+        "#{'%.2f' % @table.percent_array[i]}%".ljust(7) + "#{e}".ljust(20)
         i += 1
       end
     end
