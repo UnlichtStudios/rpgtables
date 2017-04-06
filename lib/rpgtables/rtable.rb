@@ -114,6 +114,11 @@ class RTable
     end
   end
 
+  def destroy_die_entries(die)
+    die -= 1
+    @table[die].map! { |x| x = nil }
+  end
+
   def destroy_table
     @table = []
   end

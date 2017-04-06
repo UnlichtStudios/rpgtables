@@ -123,4 +123,10 @@ would you like to remove an entry by number?
 
 Please enter a number: "
 
+  ENTRYREMOVALPROMPT =
+"Please input the entry number of the item you wish to remove: "
+
+  REMOVEDIEENTRIESPROMPT =
+"Please select a die to remove its entries:"
+
 end

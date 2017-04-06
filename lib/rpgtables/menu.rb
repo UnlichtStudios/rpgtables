@@ -100,6 +100,7 @@ class Menu
         remove_entry_from_table
 
       when 6
+        remove_entries_from_die
 
       when 7
 
@@ -122,9 +123,12 @@ class Menu
 
   def add_dice
     dice = []
+
     print ADDDICEPROMPT
+
     @stdin = get_value
     dice = @stdin.split(/[^\d]/).map { |i| i.to_i }.reject { |i| i == 0}
+
     if dice.count == 1
       @table.add_die(dice[0])
     else
@@ -133,6 +137,7 @@ class Menu
     dice.each do |d|
       puts "d#{d} added to table!"
     end
+
     print CONTINUE
     gets
   end
@@ -140,27 +145,27 @@ class Menu
   def add_entry
     if @table.table.count > 0 && @table.get_entry_count < @table.get_table_size
       print ADDENTRYPROMPT
+
       @stdin = get_value
       if @stdin.to_i == 1
         puts POPENTRYPROMPT
+
         @stdin = get_value
         @table.add_entry(@stdin)
+
         puts "'#{@stdin}' added to table!"
         gets
       elsif @stdin.to_i == 2
         pos = 0
         entry = ""
 
-        puts INSERTENTRYPOSPROMPT
-        pos = get_value.to_i
-
-        pos = process_table_index_input(pos)
-
+        pos = process_input(@table.dice.count, @table.get_table_size + @table.dice.count - 1, INSERTENTRYPOSPROMPT)
 
         puts POPENTRYPROMPT
+
         entry = get_value
-        puts "#{pos} | #{entry}"
         @table.insert_entry(pos, entry)
+
         puts "'#{entry}' added to table at position #{pos}!"
         gets
       else
@@ -196,7 +201,12 @@ class Menu
   def roll_table
     entry = @table.roll_table
     roll = @table.get_last_roll
+
     puts "----------------------------------------------------------"
+    if entry == nil
+      entry = "Empty"
+    end
+
     puts "You rolled a #{roll + 1}. Your result is #{entry}."
     print CONTINUE
     gets
@@ -204,13 +214,13 @@ class Menu
 
   def remove_entry_from_table
     puts REMOVEENTRYPROMPT
+
     @stdin = get_value.to_i
     if @stdin == 1
       @table.remove_entry
     elsif @stdin == 2
-      puts "Please input the entry number of the item you wish to remove: "
-      @stdin = get_value.to_i
-      @stdin = process_table_index_input(@stdin)
+
+      @stdin = process_input(@table.dice.count, @table.get_table_size + @table.dice.count - 1, ENTRYREMOVALPROMPT)
       @table.remove_entry(@stdin)
     else
       puts INPUTERROR
@@ -218,18 +228,32 @@ class Menu
     end
   end
 
+  def remove_entries_from_die
+    puts REMOVEDIEENTRIESPROMPT
+    puts "----------------------------------------------------------"
+    i = 1
+    @table.dice.each do |d|
+      puts "#{i}) d#{d}"
+      i += 1
+    end
+    @stdin = process_input(0, @table.dice.count)
+    @table.destroy_die_entries(@stdin)
+  end
+
   private
 
-    def process_table_index_input(pos)
+    def process_input(first, second, prompt=nil)
+      puts prompt
+      input = get_value.to_i
       # input must be within the roll range of the dice
-      until pos >= @table.dice.count && pos <= (@table.get_table_size + @table.dice.count - 1)
-        puts "Please enter a valid entry number #{@table.dice.count} - #{@table.get_table_size + @table.dice.count - 1}."
+      until input >= first && input <= second
+        puts "Please enter a valid entry number #{first} - #{second}."
         gets
-        puts INSERTENTRYPOSPROMPT
-        pos = get_value.to_i
+        puts prompt
+        input = get_value.to_i
       end
 
-      return pos
+      return input
     end
 
 end
