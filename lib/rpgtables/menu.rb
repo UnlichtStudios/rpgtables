@@ -150,15 +150,18 @@ class Menu
       elsif @stdin.to_i == 2
         pos = 0
         entry = ""
+
         puts INSERTENTRYPOSPROMPT
         pos = get_value.to_i
-        puts pos
+
+        pos = process_table_index_input(pos)
+
+
         puts POPENTRYPROMPT
         entry = get_value
         puts "#{pos} | #{entry}"
         @table.insert_entry(pos, entry)
         puts "'#{entry}' added to table at position #{pos}!"
-        puts @table.table.to_s
         gets
       else
         puts PROMPTERROR
@@ -207,11 +210,26 @@ class Menu
     elsif @stdin == 2
       puts "Please input the entry number of the item you wish to remove: "
       @stdin = get_value.to_i
+      @stdin = process_table_index_input(@stdin)
       @table.remove_entry(@stdin)
     else
       puts INPUTERROR
       gets
     end
   end
+
+  private
+
+    def process_table_index_input(pos)
+      # input must be within the roll range of the dice
+      until pos >= @table.dice.count && pos <= (@table.get_table_size + @table.dice.count - 1)
+        puts "Please enter a valid entry number #{@table.dice.count} - #{@table.get_table_size + @table.dice.count - 1}."
+        gets
+        puts INSERTENTRYPOSPROMPT
+        pos = get_value.to_i
+      end
+
+      return pos
+    end
 
 end
