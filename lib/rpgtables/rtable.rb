@@ -59,8 +59,10 @@ class RTable
   def remove_die(*args)
     if args.count == 0
       @table.pop
+      @dice.pop
     elsif args.count == 1
       @table.delete_at(args[0] - 1)
+      @dice.delete_at(args[0] - 1)
     else
       raise ArgumentError.new("Wrong number of arguments. Expecting 0 or 1, but got #{args.count}.")
     end
@@ -121,6 +123,7 @@ class RTable
 
   def destroy_table
     @table = []
+    @dice = []
   end
 
   def get_table_size
@@ -156,6 +159,7 @@ class RTable
     @table_index_array = get_table_index_array
     @expand_dice_set = get_expanded_dice_set
     @total_dice_combinations = get_dice_combinations
+    @percent_array = []
 
     @counts = 0
     match_array = []

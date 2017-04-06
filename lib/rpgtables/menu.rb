@@ -103,8 +103,10 @@ class Menu
         remove_entries_from_die
 
       when 7
+        remove_die_from_table
 
       when 8
+        reset_table
 
       when 9
 
@@ -230,14 +232,36 @@ class Menu
 
   def remove_entries_from_die
     puts REMOVEDIEENTRIESPROMPT
-    puts "----------------------------------------------------------"
-    i = 1
-    @table.dice.each do |d|
-      puts "#{i}) d#{d}"
-      i += 1
-    end
+    display_dice
+
     @stdin = process_input(0, @table.dice.count)
     @table.destroy_die_entries(@stdin)
+  end
+
+  def remove_die_from_table
+    puts REMOVEDIEPROMPT
+
+    @stdin = get_value.to_i
+    if @stdin == 1
+      @table.remove_die
+    elsif @stdin == 2
+      display_dice
+      @stdin = process_input(0, @table.dice.count, SELECTDIETOREMOVEPROMPT)
+      @table.remove_die(@stdin)
+    else
+      puts INPUTERROR
+      gets
+    end
+
+  end
+
+  def reset_table
+    @stdin = process_input(0, 2, RESETTABLEPROMPT)
+    if @stdin == 1
+      @table.reset_table
+    else
+      return
+    end
   end
 
   private
@@ -254,6 +278,15 @@ class Menu
       end
 
       return input
+    end
+
+    def display_dice
+      puts "----------------------------------------------------------"
+      i = 1
+      @table.dice.each do |d|
+        puts "#{i}) d#{d}"
+        i += 1
+      end
     end
 
 end

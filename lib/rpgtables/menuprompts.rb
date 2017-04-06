@@ -129,4 +129,22 @@ Please enter a number: "
   REMOVEDIEENTRIESPROMPT =
 "Please select a die to remove its entries:"
 
+  REMOVEDIEPROMPT =
+"Would you like to remove the last die from the table? Or
+would you like to remove a specific die? WARNING! All
+entries on the die will be removed! :
+
+1) Remove Last Die
+2) Remove Die by Index"
+
+  SELECTDIETOREMOVEPROMPT =
+"Please select a die to remove from the list: "
+
+  RESETTABLEPROMPT =
+"This will clear all entries from the table, but leave the dice.
+Do you wish to do this?
+
+1) Yes
+2) No"
+
 end
