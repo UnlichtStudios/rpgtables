@@ -73,7 +73,7 @@ class RTable
   end
 
   def insert_entry(index, entry)
-    i = get_entry(index)
+    i = get_entry(index - @dice.count)
     @table[i[0]].insert(i[1], entry)
     @table[i[0]].delete_at(i[1] + 1)
   end
@@ -89,7 +89,7 @@ class RTable
         @table[i[0]].insert(i[1], nil)
       end
     elsif args.count == 1
-      i = get_entry(args[0])
+      i = get_entry(args[0] - @dice.count)
       @table[i[0]].insert(i[1], nil)
       @table[i[0]].delete_at(i[1] + 1)
     else
@@ -179,14 +179,14 @@ class RTable
     def get_entry(index)
       i = 0
       @table.each do |d|
-        d.each do |e|
-          if i == (index - 1)
-            return [@table.index(d), @table[@table.index(d)].index(e)]
+        d.each_index do |e|
+          if i == index
+            return [@table.index(d), e]
           end
           i += 1
         end
       end
-      return i
+      return nil
     end
 
     def get_table_index_array

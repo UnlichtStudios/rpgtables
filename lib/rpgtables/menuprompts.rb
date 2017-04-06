@@ -67,15 +67,17 @@ module MenuPrompts
 |                                                        |
 |               6. Remove all entries from a die.        |
 |                                                        |
-|               7. Remove all entries from the table.    |
+|               7. Remove die from table.                |
 |                                                        |
-|               8. Reset the table.                      |
+|               8. Remove all entries from the table.    |
 |                                                        |
-|               9. Save table to disk.                   |
+|               9. Reset the table.                      |
 |                                                        |
-|              10. Go back to main menu.                 |
+|              10. Save table to disk.                   |
 |                                                        |
-|              11. Exit RPGTables.                       |
+|              11. Go back to main menu.                 |
+|                                                        |
+|              12. Exit RPGTables.                       |
 |                                                        |
 |________________________________________________________|"
 
@@ -87,8 +89,7 @@ time of the percentage curve. Its recommended to keep it
 under 4 dice: "
 
   PROMPTERROR =
-"Error! Not valid input!
-"
+"Error! Not valid input!"
 
   CONTINUE =
 "Please press enter to continue..."
@@ -112,5 +113,14 @@ Please enter a number: "
   INSERTENTRYPOSPROMPT =
 "Please enter the position on the table you wish to
 insert your entry: "
+
+  REMOVEENTRYPROMPT =
+"Would you like to remove the last entry on the table? Or
+would you like to remove an entry by number?
+
+1) Remove Last Entry
+2) Remove Entry by Index
+
+Please enter a number: "
 
 end

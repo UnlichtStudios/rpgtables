@@ -36,7 +36,6 @@ class Menu
 
   def initialize
     @stdin = ""
-    @table = RTable.new
   end
 
   def menu_state
@@ -79,7 +78,7 @@ class Menu
   end
 
   def create_table_menu
-
+    @table = RTable.new
     until @stdin == (10..11)
       puts CREATETABLEMENU
       print INPUTPROMPT
@@ -100,7 +99,19 @@ class Menu
       when 5
         remove_entry_from_table
 
+      when 6
+
+      when 7
+
+      when 8
+
+      when 9
+
+      when 10
+
       when 11
+
+      when 12
         @@menu_state = EXIT
         return
       else
@@ -127,7 +138,6 @@ class Menu
   end
 
   def add_entry
-    puts "COUNT #{@table.get_entry_count} SIZE #{@table.get_table_size}"
     if @table.table.count > 0 && @table.get_entry_count < @table.get_table_size
       print ADDENTRYPROMPT
       @stdin = get_value
@@ -142,10 +152,13 @@ class Menu
         entry = ""
         puts INSERTENTRYPOSPROMPT
         pos = get_value.to_i
+        puts pos
         puts POPENTRYPROMPT
         entry = get_value
+        puts "#{pos} | #{entry}"
         @table.insert_entry(pos, entry)
         puts "'#{entry}' added to table at position #{pos}!"
+        puts @table.table.to_s
         gets
       else
         puts PROMPTERROR
@@ -165,6 +178,9 @@ class Menu
     @table.table.each do |d|
       d.each do |e|
         puts "----------------------------------------------------------"
+        if e == nil
+          e = "Empty"
+        end
         puts "#{i + @table.dice.count}".ljust(6) +
         "#{'%.2f' % @table.percent_array[i]}%".ljust(7) + "#{e}".ljust(20)
         i += 1
@@ -184,7 +200,18 @@ class Menu
   end
 
   def remove_entry_from_table
-    puts "Please enter the "
+    puts REMOVEENTRYPROMPT
+    @stdin = get_value.to_i
+    if @stdin == 1
+      @table.remove_entry
+    elsif @stdin == 2
+      puts "Please input the entry number of the item you wish to remove: "
+      @stdin = get_value.to_i
+      @table.remove_entry(@stdin)
+    else
+      puts INPUTERROR
+      gets
+    end
   end
 
 end

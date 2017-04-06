@@ -83,7 +83,7 @@ class RTableTest < Minitest::Test
   def test_insert_entry
     seed_table
     @rtable.insert_entry(8, "INSERT")
-    assert_equal "INSERT", @rtable.table[1][1]
+    assert_equal "INSERT", @rtable.table[0][5]
   end
 
   def test_remove_entry
@@ -91,7 +91,8 @@ class RTableTest < Minitest::Test
     @rtable.remove_entry
     assert_equal nil, @rtable.table.last.last
     @rtable.remove_entry(14)
-    assert_equal nil, @rtable.table[1][7]
+    puts @rtable.table.to_s
+    assert_equal nil, @rtable.table[1][5]
   end
 
   def test_roll_table
