@@ -147,4 +147,11 @@ Do you wish to do this?
 1) Yes
 2) No"
 
+  CLEARTABLEPROMPT =
+"This will completely erase the table, including all dice and
+entries. Do you wish to do this?
+
+1) Yes
+2) No"
+
 end

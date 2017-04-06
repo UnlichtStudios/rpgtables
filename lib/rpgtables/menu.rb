@@ -106,9 +106,10 @@ class Menu
         remove_die_from_table
 
       when 8
-        reset_table
+        remove_all_entries_from_table
 
       when 9
+        clear_table
 
       when 10
 
@@ -255,13 +256,24 @@ class Menu
 
   end
 
-  def reset_table
+  def remove_all_entries_from_table
     @stdin = process_input(0, 2, RESETTABLEPROMPT)
     if @stdin == 1
       @table.reset_table
     else
       return
     end
+  end
+
+  def clear_table
+    puts CLEARTABLEPROMPT
+    @stdin = process_input(0, 2, CLEARTABLEPROMPT)
+    if @stdin == 1
+      @table.destroy_table
+    else
+      return
+    end
+
   end
 
   private
