@@ -36,6 +36,7 @@ class Menu
 
   def initialize
     @stdin = ""
+    @loaded_table = RTable.new
   end
 
   def menu_state
@@ -53,7 +54,11 @@ class Menu
       when MAIN
         main_menu
       when CREATE
-        create_table_menu
+        table_menu("Create")
+      when VIEW
+        view_tables_menu
+      when EDIT
+        table_menu("Edit")
       end
     end
   end
@@ -68,6 +73,9 @@ class Menu
       when 1
         @@menu_state = CREATE
         return
+      when 2
+        @@menu_state = VIEW
+        return
       when 3
         @@menu_state = EXIT
         return
@@ -77,10 +85,18 @@ class Menu
     end
   end
 
-  def create_table_menu
-    @table = RTable.new
+  def table_menu(name)
+    if name == "Create"
+      @table = RTable.new
+      puts TABLENAMEPROMPT
+      @stdin = get_value.split("").reject{|i| i == "/" || i == "\\0"}.join
+      @table.set_name(@stdin)
+    else
+      @table = @loaded_table
+    end
+
     until @stdin == (10..11)
-      puts CREATETABLEMENU
+      display_menu(name)
       print INPUTPROMPT
       @stdin = get_value
       case @stdin.to_i
@@ -91,10 +107,10 @@ class Menu
         add_entry
 
       when 3
-        view_table
+        view_table(@table)
 
       when 4
-        roll_table
+        roll_table(@table)
 
       when 5
         remove_entry_from_table
@@ -112,8 +128,11 @@ class Menu
         clear_table
 
       when 10
+        save_table
 
       when 11
+        @@menu_state = MAIN
+        return
 
       when 12
         @@menu_state = EXIT
@@ -122,6 +141,59 @@ class Menu
         puts INPUTERROR
       end
     end
+  end
+
+  def view_tables_menu
+    @tablenames = []
+    until @stdin == (1..6)
+      puts VIEWTABLE
+      puts VIEWTABLEMENU
+      puts INPUTPROMPT
+      @stdin = get_value.to_i
+      case @stdin
+      when 1
+        display_tables
+
+        puts VIEWTABLEPROMPT
+        load_table
+        view_table(@loaded_table)
+
+      when 2
+        display_tables
+
+        puts EDITTABLEPROMPT
+        load_table
+        @@menu_state = EDIT
+        return
+
+      when 3
+        display_tables
+
+        puts DESTROYTABLEPROMPT
+        @stdin = process_input(0, @tablenames.count)
+
+        name = @tablenames[@stdin - 1].split(" ").
+                                       reject{|i| i == "/" || i == "\\0"}.
+                                       join
+        delete_table(name)
+
+      when 4
+        display_tables
+        puts ROLLTABLEPROMPT
+
+        load_table
+        roll_table(@loaded_table)
+
+      when 5
+        @@menu_state = MAIN
+        return
+      when 6
+        @@menu_state = EXIT
+        return
+      end
+
+    end
+
   end
 
   def add_dice
@@ -181,19 +253,23 @@ class Menu
     end
   end
 
-  def view_table
-    @table.calculate_table
+  def view_table(table)
+    table.calculate_table
     i = 0
+    "----------------------------------------------------------"
+
+    puts table.name.center(58)
+
     puts "----------------------------------------------------------"
     puts " Pos |   %   |                 Entry"
-    @table.table.each do |d|
+    table.table.each do |d|
       d.each do |e|
         puts "----------------------------------------------------------"
         if e == nil
           e = "Empty"
         end
-        puts "#{i + @table.dice.count}".ljust(6) +
-        "#{'%.2f' % @table.percent_array[i]}%".ljust(7) + "#{e}".ljust(20)
+        puts "#{i + table.dice.count}".ljust(6) +
+        "#{'%.2f' % table.percent_array[i]}%".ljust(7) + "#{e}".ljust(20)
         i += 1
       end
     end
@@ -201,9 +277,9 @@ class Menu
     gets
   end
 
-  def roll_table
-    entry = @table.roll_table
-    roll = @table.get_last_roll
+  def roll_table(table)
+    entry = table.roll_table
+    roll = table.get_last_roll
 
     puts "----------------------------------------------------------"
     if entry == nil
@@ -273,13 +349,37 @@ class Menu
     else
       return
     end
+  end
 
+  def save_table
+    puts SAVETABLEPROMPT
+    name = @table.name.
+      split(" ").
+      reject{|i| i == "/" || i == "\\0"}.
+      join
+    @table.save_table(name)
+    puts "Table saved as data/#{name}_rpgtable.json"
+    gets
+  end
+
+  def display_tables
+    puts "|------------------------------------------------------|"
+    puts "|                                                      |"
+    i = 1
+    Dir.glob('data/*_rpgtable.json') do |f|
+      table_name = get_table_name(f.to_s)
+      @tablenames.push(table_name)
+      puts "|" + "#{i}) #{table_name}".center(54) + "|"
+      i += 1
+    end
+    puts "|                                                      |"
+    puts "|------------------------------------------------------|"
   end
 
   private
 
     def process_input(first, second, prompt=nil)
-      puts prompt
+      print prompt
       input = get_value.to_i
       # input must be within the roll range of the dice
       until input >= first && input <= second
@@ -299,6 +399,25 @@ class Menu
         puts "#{i}) d#{d}"
         i += 1
       end
+    end
+
+    def get_table_name(file)
+      json = File.read(file)
+      obj = JSON.parse(json)
+      return obj["name"]
+    end
+
+    def load_table
+      @stdin = process_input(0, @tablenames.count)
+
+      @loaded_table.load_table(@tablenames[@stdin - 1].
+                    split(" ").
+                    reject{|i| i == "/" || i == "\\0"}.
+                    join)
+    end
+
+    def delete_table(name)
+      File.delete("data/#{name}_rpgtable.json") if File.exist?("data/#{name}_rpgtable.json")
     end
 
 end

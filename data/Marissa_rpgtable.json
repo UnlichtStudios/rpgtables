@@ -1,0 +1,39 @@
+{
+	"name" : "Marissa",
+	"table" :
+[
+  [
+    "HEY LOVE!",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  [
+    null,
+    null
+  ]
+],
+	"dice" :
+[
+  12,
+  8,
+  3
+]
+}

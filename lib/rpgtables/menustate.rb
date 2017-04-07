@@ -21,9 +21,10 @@
 # SOFTWARE.
 
 module MenuState
-  @@menustate = ""
+  @@menustate
   MAIN = 1
   CREATE = 2
   VIEW = 4
-  EXIT = 8
+  EDIT = 8
+  EXIT = 16
 end

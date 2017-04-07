@@ -1,3 +1,3 @@
 module Rpgtables
-  VERSION = "0.0.1.20"
+  VERSION = "1.0.0.0"
 end

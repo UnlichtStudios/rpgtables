@@ -21,17 +21,24 @@
 # SOFTWARE.
 
 # A table containing entries that can be randomly chosen
+require 'json'
+
 class RTable
 
-  attr_accessor :table, :dice
+  attr_accessor :table, :dice, :name
 
   attr_reader :percent_array
 
   def initialize
+    @name = ""
     @table = []
     @rolls = []
     @dice = []
     @percent_array = []
+  end
+
+  def set_name(name)
+    @name = name
   end
 
   def add_die(die)
@@ -171,6 +178,32 @@ class RTable
       @percent_array.push((x / @total_dice_combinations) * 100)
     end
   end
+
+  def save_table(name)
+    File.open("data/#{name}_rpgtable.json", "w") do |f|
+      f.write("{\n")
+      f.write("\t\"name\" : ")
+      f.write(@name.to_json)
+      f.write(",")
+      f.write("\n")
+      f.write("\t\"table\" :\n")
+      f.write(JSON.pretty_generate(@table))
+      f.write(",")
+      f.write("\n")
+      f.write("\t\"dice\" :\n")
+      f.write(JSON.pretty_generate(@dice))
+      f.write("\n}")
+    end
+  end
+
+  def load_table(name)
+    json = File.read("data/#{name}_rpgtable.json")
+    obj = JSON.parse(json)
+    @name = obj["name"]
+    @table = obj["table"]
+    @dice = obj["dice"]
+  end
+
 
   private
 

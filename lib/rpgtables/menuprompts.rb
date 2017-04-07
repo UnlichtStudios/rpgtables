@@ -47,10 +47,14 @@ module MenuPrompts
 |                                                        |
 |--------------------------------------------------------|"
 
-  CREATETABLEMENU =
-"|--------------------------------------------------------|
+  TABLENAMEPROMPT =
+"Please enter a name for your table. Do not use '/ or '\\0'
+in the title name: "
+
+  def display_menu(title)
+    puts "|--------------------------------------------------------|
 |                                                        |
-|                     Create A Table                     |
+|" + "#{title} A Table.".center(56) + "|
 |          Please select a choice from below!            |
 |                                                        |
 |--------------------------------------------------------|
@@ -80,6 +84,7 @@ module MenuPrompts
 |              12. Exit RPGTables.                       |
 |                                                        |
 |________________________________________________________|"
+end
 
   ADDDICEPROMPT =
 "Please enter either a single die number, or a list of
@@ -153,5 +158,48 @@ entries. Do you wish to do this?
 
 1) Yes
 2) No"
+
+  SAVETABLEPROMPT =
+"Please enter a name for the table: "
+
+  VIEWTABLE =
+"|------------------------------------------------------|
+|                                                      |
+|                    View Table Menu                   |
+|                                                      |
+|------------------------------------------------------|"
+
+  VIEWTABLEMENU =
+"|------------------------------------------------------|
+|                                                      |
+|               Select a choice from below!            |
+|                                                      |
+|------------------------------------------------------|
+|                                                      |
+|                    1) View Table                     |
+|                                                      |
+|                    2) Edit Table                     |
+|                                                      |
+|                    3) Delete Table                   |
+|                                                      |
+|                    4) Roll on a Table                |
+|                                                      |
+|                    5) Return to Main Menu            |
+|                                                      |
+|                    6) Exit Program                   |
+|                                                      |
+|------------------------------------------------------|"
+
+  VIEWTABLEPROMPT =
+"Please enter the number of the table you wish to view: "
+
+  EDITTABLEPROMPT =
+"Please enter the number of table you wish to edit: "
+
+  DESTROYTABLEPROMPT =
+"Please enter the number of the table you wish to delete: "
+
+  ROLLTABLEPROMPT =
+"Please enter the number of the table you wish to roll on: "
 
 end
