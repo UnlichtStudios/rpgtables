@@ -3,37 +3,16 @@
 	"table" :
 [
   [
-    "HEY LOVE!",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  [
-    null,
-    null
+    "HEY!",
+    "MY",
+    "BABY",
+    "I",
+    "LOVE",
+    "YOU!"
   ]
 ],
 	"dice" :
 [
-  12,
-  8,
-  3
+  6
 ]
 }

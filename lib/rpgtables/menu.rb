@@ -185,9 +185,15 @@ class Menu
         roll_table(@loaded_table)
 
       when 5
+        display_tables
+        puts EXPORTTABLEPROMPT
+        load_table
+        export_table
+
+      when 6
         @@menu_state = MAIN
         return
-      when 6
+      when 7
         @@menu_state = EXIT
         return
       end
@@ -418,6 +424,34 @@ class Menu
 
     def delete_table(name)
       File.delete("data/#{name}_rpgtable.json") if File.exist?("data/#{name}_rpgtable.json")
+    end
+
+    def export_table
+      filename = @loaded_table.name.split(" ").join
+      @loaded_table.calculate_table
+      File.open("export/#{filename}.txt", "w") do |f|
+        5.times.each do
+          f.write("\n")
+        end
+        f.write(" " * 20 + "|" + "-" * 56 + "|\n")
+        f.write(" " * 20 + "|" + " " * 56 + "|\n")
+        f.write(" " * 20 + "|" + @loaded_table.name.center(56) + "|\n")
+        f.write(" " * 20 + "|" + " " * 56 + "|\n")
+        f.write(" " * 20 + "|" + "-" * 56 + "|\n")
+        f.write(" " * 20 + "|" + "Roll".center(7) + "|" + "Chance".center(8) + "|" +
+                "Entry".center(39) + "|\n")
+        f.write(" " * 20 + "|" + "-" * 56 + "|\n")
+        i = 0
+        @loaded_table.table.each do |d|
+          d.each do |e|
+            f.write(" " * 20 + "| " + "#{i + @loaded_table.dice.count}".center(6) + "| " +
+                    "#{'%.2f' % @loaded_table.percent_array[i]}%".ljust(7) + "| " +
+                    "#{e}".ljust(38) + "|\n")
+            f.write(" " * 20 + "|" + "-" * 56 + "|\n")
+            i += 1
+          end
+        end
+      end
     end
 
 end

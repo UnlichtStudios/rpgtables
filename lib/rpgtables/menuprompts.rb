@@ -184,9 +184,11 @@ entries. Do you wish to do this?
 |                                                      |
 |                    4) Roll on a Table                |
 |                                                      |
-|                    5) Return to Main Menu            |
+|                    5) Export Table                   |
 |                                                      |
-|                    6) Exit Program                   |
+|                    6) Return to Main Menu            |
+|                                                      |
+|                    7) Exit Program                   |
 |                                                      |
 |------------------------------------------------------|"
 
@@ -201,5 +203,8 @@ entries. Do you wish to do this?
 
   ROLLTABLEPROMPT =
 "Please enter the number of the table you wish to roll on: "
+
+  EXPORTTABLEPROMPT =
+"Please enter the number of the table you wish to print: "
 
 end
