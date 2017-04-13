@@ -1,0 +1,30 @@
+{
+	"name" : "Example",
+	"table" :
+[
+  [
+    "Goblins",
+    "Orcs",
+    "Kobolds",
+    "Bugbears"
+  ],
+  [
+    "Hobgoblins",
+    "Dragons",
+    "Yuan-ti",
+    "Mindflayer",
+    "Beholder"
+  ],
+  [
+    "Displacer Beast",
+    "Bulette",
+    "Elemental"
+  ]
+],
+	"dice" :
+[
+  4,
+  6,
+  4
+]
+}
